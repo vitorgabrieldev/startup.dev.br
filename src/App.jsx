@@ -30,6 +30,7 @@ import heroBackground from './assets/TG9PKr95AzMP.jpg'
 import gradientBg1 from './assets/gvxttIlWlQos.jpg'
 import gradientBg2 from './assets/09mwMSYz8qBv.jpg'
 import techBg from './assets/ZekcKZbLVRK8.jpg'
+import headerLogo from './assets/ugn7w8ehgwe8g.png'
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -110,9 +111,6 @@ function App() {
       <header className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-border">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 rounded-lg gradient-purple-blue flex items-center justify-center">
-              <Brain className="w-5 h-5 text-white" />
-            </div>
             <span className="text-xl font-bold gradient-text">startup.dev.br</span>
           </div>
           
