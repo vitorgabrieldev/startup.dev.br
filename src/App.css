@@ -101,15 +101,9 @@
   background-clip: text;
 }
 
-/* Animações customizadas */
-.float-animation {
-  animation: float 6s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-}
+/* Animações customizadas (removidas ou simplificadas) */
+/* .float-animation { animation: none; } */
+/* @keyframes float { from { transform: translateY(0px); } to { transform: translateY(0px); } } */
 
 .glow-effect {
   box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
@@ -128,7 +122,7 @@
 }
 
 .hover-scale:hover {
-  transform: scale(1.05);
+  transform: scale(1.02);
   transition: transform 0.3s ease;
 }
 
@@ -162,4 +156,5 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #a855f7;
 }
+
 
