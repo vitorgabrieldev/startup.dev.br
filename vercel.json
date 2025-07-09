@@ -1,7 +1,6 @@
 {
   "buildCommand": "pnpm test:run && pnpm build",
   "outputDirectory": "dist",
-  "installCommand": "pnpm install",
+  "installCommand": "npm install --legacy-peer-deps",
   "framework": "vite"
 }
-
