@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { Button } from '@/components/ui/button.jsx'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx'
 import { Badge } from '@/components/ui/badge.jsx'
@@ -30,11 +31,9 @@ import heroBackground from './assets/TG9PKr95AzMP.jpg'
 import gradientBg1 from './assets/gvxttIlWlQos.jpg'
 import gradientBg2 from './assets/09mwMSYz8qBv.jpg'
 import techBg from './assets/ZekcKZbLVRK8.jpg'
-import headerLogo from './assets/ugn7w8ehgwe8g.png'
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  // ScrollY state e efeito removidos para um design mais estático
 
   const features = [
     {
@@ -159,33 +158,41 @@ function App() {
         <div className="container mx-auto px-4 text-center relative z-10">
           <div className="max-w-4xl mx-auto">
             <Badge className="mb-6 bg-primary/20 text-primary border-primary/30 hover:bg-primary/30">
-              ✨ Em Construção: O Futuro da Educação
+              ✨ Em Construção: Crie. Ensine. Venda. Com inteligência.
             </Badge>
             
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-              <span className="gradient-text">Revolucionando</span> o Ensino Online
+              <span className="gradient-text">O futuro</span> do ensino começa com você.
             </h1>
             
-            <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-              Prepare-se para uma plataforma que une educação e inteligência artificial. 
-              Seja um dos primeiros a transformar o modo como você compartilha conhecimento.
+            <p className="text-xl md:text-2xl text-muted-foreground mb-6 max-w-2xl mx-auto">
+              Uma nova forma de ensinar e compartilhar conhecimento. <br />
+              Com tecnologia ao seu lado — e você no controle.
             </p>
-            
+
+            <p className="text-md md:text-lg text-muted-foreground mb-10 max-w-2xl mx-auto">
+              Uma plataforma feita para professores. <br />
+              Com IA como aliada, e você como protagonista da educação.
+            </p>
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-              <Button size="lg" className="gradient-purple-blue hover-glow text-lg px-8 py-6">
-                Junte-se à Lista de Espera
-                <ArrowRight className="ml-2 w-5 h-5" />
+              <Button
+                size="lg"
+                className="gradient-purple-blue hover-glow text-lg px-12 py-6 cursor-pointer"
+                onClick={() => window.open('https://tally.so/embed/3XA9RP', '_blank')}
+              >
+                Inscreva-se Agora
+                <Rocket className="ml-2 w-5 h-5" />
               </Button>
-              <Button variant="outline" size="lg" className="neon-border hover-scale text-lg px-8 py-6">
-                <Play className="mr-2 w-5 h-5" />
-                Saiba Mais
+              <Button variant="outline" size="lg" className="neon-border hover-scale text-lg px-12 py-6">
+                Fale Conosco
               </Button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
               <div className="text-center">
                 <div className="text-3xl font-bold gradient-text">IA</div>
-                <div className="text-muted-foreground">Conteúdo Inteligente</div>
+                <div className="text-muted-foreground">Educação humana com suporte da IA</div>
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold gradient-text">Curadoria</div>
