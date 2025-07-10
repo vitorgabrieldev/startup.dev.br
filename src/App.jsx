@@ -181,11 +181,8 @@ function App() {
                 className="gradient-purple-blue hover-glow text-lg px-12 py-6 cursor-pointer"
                 onClick={() => window.open('https://tally.so/embed/3XA9RP', '_blank')}
               >
-                Inscreva-se Agora
+                Receber acesso antecipado
                 <Rocket className="ml-2 w-5 h-5" />
-              </Button>
-              <Button variant="outline" size="lg" className="neon-border hover-scale text-lg px-12 py-6">
-                Fale Conosco
               </Button>
             </div>
 
@@ -256,10 +253,10 @@ function App() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
             <Badge className="mb-4 bg-primary/20 text-primary border-primary/30">
-              ✨ Pilares da Nossa Plataforma
+              ✨ Nossa Essência
             </Badge>
             <h2 className="text-3xl md:text-5xl font-bold mb-6">
-              Recursos em <span className="gradient-text">Desenvolvimento</span>
+              Recursos em <span className="gradient-text">desenvolvimento</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Tecnologia de ponta para um futuro educacional mais acessível e eficiente
@@ -319,33 +316,6 @@ function App() {
               </Card>
             ))}
           </div>
-
-          <div className="mt-16 text-center">
-            <Card className="max-w-2xl mx-auto bg-card/50 backdrop-blur-sm neon-border">
-              <CardHeader>
-                <CardTitle className="text-2xl gradient-text">Plano Premium Futuro</CardTitle>
-                <CardDescription className="text-lg">Benefícios exclusivos para professores</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-5 h-5 text-primary" />
-                  <span>Subdomínio personalizado</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-5 h-5 text-primary" />
-                  <span>Destaque nos resultados de busca</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-5 h-5 text-primary" />
-                  <span>Estatísticas avançadas e analytics</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-5 h-5 text-primary" />
-                  <span>Suporte prioritário</span>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
         </div>
       </section>
 
@@ -357,20 +327,21 @@ function App() {
         <div className="container mx-auto px-4 text-center relative z-10">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl md:text-5xl font-bold mb-6">
-              Seja parte da <span className="gradient-text">revolução</span> educacional!
+              Para quem <span className="gradient-text">ensina</span> e para quem <span className="gradient-text">aprende</span>: uma nova forma de viver a educação.
             </h2>
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Junte-se à comunidade que está construindo o futuro do ensino online. 
-              Seja um dos primeiros a ter acesso a essa inovação.
+              Estamos criando uma nova plataforma de ensino: conteúdo direto, atualizado com IA e professores valorizados.  
+              Junte-se aos primeiros a testar e ajudar a moldar essa experiência.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-              <Button size="lg" className="gradient-purple-blue hover-glow text-lg px-12 py-6">
-                Inscreva-se Agora
+              <Button
+                size="lg"
+                className="gradient-purple-blue hover-glow text-lg px-12 py-6 cursor-pointer"
+                onClick={() => window.open('https://tally.so/embed/3XA9RP', '_blank')}
+              >
+                Receber acesso antecipado
                 <Rocket className="ml-2 w-5 h-5" />
-              </Button>
-              <Button variant="outline" size="lg" className="neon-border hover-scale text-lg px-12 py-6">
-                Fale Conosco
               </Button>
             </div>
 
@@ -395,18 +366,9 @@ function App() {
       {/* Footer */}
       <footer className="py-12 border-t border-border bg-card/50">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center justify-between">
+          <div className="flex flex-col md:flex-row items-center justify-center">
             <div className="flex items-center space-x-2 mb-4 md:mb-0">
-              <div className="w-8 h-8 rounded-lg gradient-purple-blue flex items-center justify-center">
-                <Brain className="w-5 h-5 text-white" />
-              </div>
               <span className="text-xl font-bold gradient-text">startup.dev.br</span>
-            </div>
-            
-            <div className="flex items-center space-x-6 text-muted-foreground">
-              <a href="#" className="hover:text-primary transition-colors">Termos de Uso</a>
-              <a href="#" className="hover:text-primary transition-colors">Política de Privacidade</a>
-              <a href="#" className="hover:text-primary transition-colors">Contato</a>
             </div>
           </div>
           
