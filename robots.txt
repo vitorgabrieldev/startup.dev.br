@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://startup.dev.br/sitemap.xml
