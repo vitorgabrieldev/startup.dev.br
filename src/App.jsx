@@ -319,6 +319,10 @@ function App() {
             <button onClick={() => scrollToSection('problems')} className="text-muted-foreground hover:text-primary transition-all duration-300 hover:drop-shadow-[0_0_6px_rgba(239,68,68,0.3)] cursor-pointer">Desafios</button>
             <button onClick={() => scrollToSection('pricing')} className="text-muted-foreground hover:text-primary transition-all duration-300 hover:drop-shadow-[0_0_6px_rgba(34,197,94,0.3)] cursor-pointer">Valores</button>
             <button onClick={() => scrollToSection('cta')} className="text-muted-foreground hover:text-primary transition-all duration-300 hover:drop-shadow-[0_0_6px_rgba(168,85,247,0.3)] cursor-pointer">Participe</button>
+            <div className="flex items-center gap-4 ml-2">
+              <a href="https://app.startup.dev.br/signup" target="_blank" rel="noopener" className="px-5 py-2 border border-primary/60 rounded-md font-semibold text-primary bg-background/60 hover:bg-primary/10 transition-all duration-200 shadow-sm focus-visible:ring-2 focus-visible:ring-primary/30 focus:outline-none flex items-center gap-2"><Users className="w-4 h-4" />Criar conta</a>
+              <a href="https://app.startup.dev.br/login" target="_blank" rel="noopener" className="px-5 py-2 border border-border rounded-md font-semibold text-muted-foreground bg-background/60 hover:bg-accent/30 transition-all duration-200 shadow-sm focus-visible:ring-2 focus-visible:ring-primary/20 focus:outline-none">Login</a>
+            </div>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -346,6 +350,10 @@ function App() {
                 <button onClick={() => scrollToSection('problems')} className="text-muted-foreground hover:text-primary transition-colors cursor-pointer text-left">Desafios</button>
                 <button onClick={() => scrollToSection('pricing')} className="text-muted-foreground hover:text-primary transition-colors cursor-pointer text-left">Valores</button>
                 <button onClick={() => scrollToSection('cta')} className="text-muted-foreground hover:text-primary transition-colors cursor-pointer text-left">Participe</button>
+                <div className="flex flex-col gap-3 pt-4 border-t border-border mt-2">
+                  <button className="w-full px-5 py-2 border border-primary/60 rounded-md font-semibold text-primary bg-background/60 hover:bg-primary/10 transition-all duration-200 shadow-sm focus-visible:ring-2 focus-visible:ring-primary/30 focus:outline-none">Criar conta</button>
+                  <button className="w-full px-5 py-2 border border-border rounded-md font-semibold text-muted-foreground bg-background/60 hover:bg-accent/30 transition-all duration-200 shadow-sm focus-visible:ring-2 focus-visible:ring-primary/20 focus:outline-none">Login</button>
+                </div>
               </nav>
             </motion.div>
           )}
@@ -413,24 +421,14 @@ function App() {
               className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16"
               variants={fadeInUp}
             >
-              <Tooltip.Root>
-                <Tooltip.Trigger asChild>
-                  <Button
-                    size="lg"
-                    className="gradient-purple-blue hover-glow text-lg px-12 py-6 cursor-pointer pulsing-border"
-                    onClick={() => window.open('https://tally.so/embed/3XA9RP', '_blank')}
-                  >
-                    Receber acesso antecipado
-                    <Rocket className="ml-2 w-5 h-5" />
-                  </Button>
-                </Tooltip.Trigger>
-                <Tooltip.Portal>
-                  <Tooltip.Content className="bg-card border border-border px-3 py-2 rounded-lg text-sm shadow-lg max-w-xs z-[9999999]" sideOffset={5}>
-                    <p>Seja um dos primeiros a experimentar nossa plataforma.</p>
-                    <Tooltip.Arrow className="fill-card" />
-                  </Tooltip.Content>
-                </Tooltip.Portal>
-              </Tooltip.Root>
+              <a href="https://app.startup.dev.br/signup" target="_blank" rel="noopener" className="px-8 py-3 border border-primary/60 rounded-md font-semibold text-primary bg-background/60 hover:bg-primary/10 transition-all duration-200 shadow-sm focus-visible:ring-2 focus-visible:ring-primary/30 focus:outline-none flex items-center gap-2 text-lg">
+                <Users className="w-5 h-5" />
+                Criar conta
+              </a>
+              <a href="https://app.startup.dev.br/login" target="_blank" rel="noopener" className="px-8 py-3 border border-border rounded-md font-semibold text-muted-foreground bg-background/60 hover:bg-accent/30 transition-all duration-200 shadow-sm focus-visible:ring-2 focus-visible:ring-primary/20 focus:outline-none flex items-center gap-2 text-lg">
+                Login
+                <ArrowRight className="w-5 h-5" />
+              </a>
             </motion.div>
 
             <motion.div 
@@ -713,45 +711,14 @@ function App() {
               className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16"
               variants={fadeInUp}
             >
-              <Tooltip.Root>
-                <Tooltip.Trigger asChild>
-                  <Button
-                    size="lg"
-                    className="gradient-purple-blue hover-glow text-lg px-12 py-6 cursor-pointer pulsing-border"
-                    onClick={() => window.open('https://tally.so/embed/3XA9RP', '_blank')}
-                  >
-                    Receber acesso antecipado
-                    <Rocket className="ml-2 w-5 h-5" />
-                  </Button>
-                </Tooltip.Trigger>
-                <Tooltip.Portal>
-                  <Tooltip.Content className="bg-card border border-border px-3 py-2 rounded-lg text-sm shadow-lg max-w-xs z-[9999999]" sideOffset={5}>
-                    <p>Seja um dos primeiros a experimentar nossa plataforma.</p>
-                    <Tooltip.Arrow className="fill-card" />
-                  </Tooltip.Content>
-                </Tooltip.Portal>
-              </Tooltip.Root>
+              {/* Botão de acesso antecipado removido */}
             </motion.div>
 
             <motion.div 
               className="flex flex-wrap justify-center items-center gap-10 text-muted-foreground"
               variants={staggerContainer}
             >
-              <Tooltip.Root>
-                <Tooltip.Trigger asChild>
-                  <motion.div className="flex items-center space-x-3 cursor-help" variants={scaleIn}>
-                    <Star className="w-5 h-5 text-yellow-500" />
-                    <span>Acesso Antecipado</span>
-                  </motion.div>
-                </Tooltip.Trigger>
-                <Tooltip.Portal>
-                  <Tooltip.Content className="bg-card border border-border px-3 py-2 rounded-lg text-sm shadow-lg max-w-xs z-[9999999]" sideOffset={5}>
-                    <p>Seja um dos primeiros a testar nossa plataforma.</p>
-                    <Tooltip.Arrow className="fill-card" />
-                  </Tooltip.Content>
-                </Tooltip.Portal>
-              </Tooltip.Root>
-              
+              {/* Destaque 'Acesso Antecipado' removido */}
               <Tooltip.Root>
                 <Tooltip.Trigger asChild>
                   <motion.div className="flex items-center space-x-3 cursor-help" variants={scaleIn}>
@@ -766,7 +733,6 @@ function App() {
                   </Tooltip.Content>
                 </Tooltip.Portal>
               </Tooltip.Root>
-              
               <Tooltip.Root>
                 <Tooltip.Trigger asChild>
                   <motion.div className="flex items-center space-x-3 cursor-help" variants={scaleIn}>
