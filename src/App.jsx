@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Button } from '@/components/ui/button.jsx'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx'
 import { Badge } from '@/components/ui/badge.jsx'
+import * as Tooltip from '@radix-ui/react-tooltip'
 import {
   Brain,
   BookOpen,
@@ -32,8 +33,69 @@ import gradientBg1 from './assets/gvxttIlWlQos.jpg'
 import gradientBg2 from './assets/09mwMSYz8qBv.jpg'
 import techBg from './assets/ZekcKZbLVRK8.jpg'
 
+// Variantes de animação
+const fadeInUp = {
+  initial: { opacity: 0, y: 60 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.6, ease: "easeOut" }
+}
+
+const fadeInLeft = {
+  initial: { opacity: 0, x: -60 },
+  animate: { opacity: 1, x: 0 },
+  transition: { duration: 0.6, ease: "easeOut" }
+}
+
+const fadeInRight = {
+  initial: { opacity: 0, x: 60 },
+  animate: { opacity: 1, x: 0 },
+  transition: { duration: 0.6, ease: "easeOut" }
+}
+
+const staggerContainer = {
+  animate: {
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+}
+
+const scaleIn = {
+  initial: { opacity: 0, scale: 0.8 },
+  animate: { opacity: 1, scale: 1 },
+  transition: { duration: 0.5, ease: "easeOut" }
+}
+
+const slideInFromTop = {
+  initial: { opacity: 0, y: -100 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.8, ease: "easeOut" }
+}
+
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY
+      setIsScrolled(scrollTop > 100)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      })
+    }
+    setIsMenuOpen(false) // Fecha o menu mobile após clicar
+  }
 
   const features = [
     {
@@ -105,25 +167,30 @@ function App() {
   ]
 
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+    <Tooltip.Provider>
+      <div className="min-h-screen bg-background text-foreground overflow-hidden">
       {/* Header */}
-      <header className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+      <header className={`fixed z-[9999999] transition-all duration-300 ease-out ${
+        isScrolled 
+          ? 'top-[20px] bg-background/70 backdrop-blur-md border border-border/50 rounded-[18px] left-4 right-4 shadow-lg shadow-purple-500/10 hover:shadow-purple-500/15 hover:shadow-xl' 
+          : 'top-0 left-0 right-0 bg-background/60 backdrop-blur-md border-b border-border/50 shadow-blue-500/5 hover:shadow-blue-500/10'
+      }`}>
+        <div className="container mx-auto px-6 py-6 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <span className="text-xl font-bold gradient-text">startup.dev.br</span>
+            <span className="text-xl font-bold gradient-text drop-shadow-[0_0_8px_rgba(147,51,234,0.3)] hover:drop-shadow-[0_0_12px_rgba(147,51,234,0.4)] transition-all duration-300">startup.dev.br</span>
           </div>
           
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="text-muted-foreground hover:text-primary transition-colors">Recursos</a>
-            <a href="#problems" className="text-muted-foreground hover:text-primary transition-colors">Desafios</a>
-            <a href="#pricing" className="text-muted-foreground hover:text-primary transition-colors">Valores</a>
-            <a href="#cta" className="text-muted-foreground hover:text-primary transition-colors">Participe</a>
+          <nav className="hidden md:flex items-center space-x-10">
+            <button onClick={() => scrollToSection('features')} className="text-muted-foreground hover:text-primary transition-all duration-300 hover:drop-shadow-[0_0_6px_rgba(59,130,246,0.3)] cursor-pointer">Recursos</button>
+            <button onClick={() => scrollToSection('problems')} className="text-muted-foreground hover:text-primary transition-all duration-300 hover:drop-shadow-[0_0_6px_rgba(239,68,68,0.3)] cursor-pointer">Desafios</button>
+            <button onClick={() => scrollToSection('pricing')} className="text-muted-foreground hover:text-primary transition-all duration-300 hover:drop-shadow-[0_0_6px_rgba(34,197,94,0.3)] cursor-pointer">Valores</button>
+            <button onClick={() => scrollToSection('cta')} className="text-muted-foreground hover:text-primary transition-all duration-300 hover:drop-shadow-[0_0_6px_rgba(168,85,247,0.3)] cursor-pointer">Participe</button>
           </nav>
 
           {/* Mobile Menu Button */}
           <button 
-            className="md:hidden"
+            className="md:hidden cursor-pointer"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label={isMenuOpen ? "Fechar menu" : "Abrir menu"}
           >
@@ -132,16 +199,24 @@ function App() {
         </div>
 
         {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden bg-card border-t border-border">
-            <nav className="container mx-auto px-4 py-4 flex flex-col space-y-4">
-              <a href="#features" className="text-muted-foreground hover:text-primary transition-colors">Recursos</a>
-              <a href="#problems" className="text-muted-foreground hover:text-primary transition-colors">Desafios</a>
-              <a href="#pricing" className="text-muted-foreground hover:text-primary transition-colors">Valores</a>
-              <a href="#cta" className="text-muted-foreground hover:text-primary transition-colors">Participe</a>
-            </nav>
-          </div>
-        )}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div 
+              className="md:hidden bg-card border-t border-border"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <nav className="container mx-auto px-6 py-6 flex flex-col space-y-6">
+                <button onClick={() => scrollToSection('features')} className="text-muted-foreground hover:text-primary transition-colors cursor-pointer text-left">Recursos</button>
+                <button onClick={() => scrollToSection('problems')} className="text-muted-foreground hover:text-primary transition-colors cursor-pointer text-left">Desafios</button>
+                <button onClick={() => scrollToSection('pricing')} className="text-muted-foreground hover:text-primary transition-colors cursor-pointer text-left">Valores</button>
+                <button onClick={() => scrollToSection('cta')} className="text-muted-foreground hover:text-primary transition-colors cursor-pointer text-left">Participe</button>
+              </nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
       {/* Hero Section */}
@@ -150,57 +225,130 @@ function App() {
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
           style={{ 
             backgroundImage: `url(${heroBackground})`,
-            // Animação removida para um design mais estático
           }}
         />
         <div className="absolute inset-0 bg-grid-pattern opacity-30" />
         
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <div className="max-w-4xl mx-auto">
-            <Badge className="mb-6 bg-primary/20 text-primary border-primary/30 hover:bg-primary/30">
-              ✨ Em Construção: Crie. Ensine. Venda. Com inteligência.
-            </Badge>
+        <div className="container mx-auto px-6 text-center relative z-10">
+          <motion.div 
+            className="max-w-4xl mx-auto"
+            variants={staggerContainer}
+            initial="initial"
+            animate="animate"
+          >
+            <motion.div variants={fadeInUp}>
+              <Tooltip.Root>
+                <Tooltip.Trigger asChild>
+                  <Badge className="mb-8 bg-primary/20 text-primary border-primary/30 hover:bg-primary/30 cursor-help">
+                    ✨ Em Construção: Crie. Ensine. Venda. Com inteligência.
+                  </Badge>
+                </Tooltip.Trigger>
+                <Tooltip.Portal>
+                  <Tooltip.Content className="bg-card border border-border px-3 py-2 rounded-lg text-sm shadow-lg max-w-xs z-[9999999]" sideOffset={5}>
+                    <p>Plataforma em desenvolvimento ativo.</p>
+                    <Tooltip.Arrow className="fill-card" />
+                  </Tooltip.Content>
+                </Tooltip.Portal>
+              </Tooltip.Root>
+            </motion.div>
             
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+            <motion.h1 
+              className="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight"
+              variants={fadeInUp}
+            >
               <span className="gradient-text">O futuro</span> do ensino começa com você.
-            </h1>
+            </motion.h1>
             
-            <p className="text-xl md:text-2xl text-muted-foreground mb-6 max-w-2xl mx-auto">
+            <motion.p 
+              className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto"
+              variants={fadeInUp}
+            >
               Uma nova forma de ensinar e compartilhar conhecimento. <br />
               Com tecnologia ao seu lado — e você no controle.
-            </p>
+            </motion.p>
 
-            <p className="text-md md:text-lg text-muted-foreground mb-10 max-w-2xl mx-auto">
+            <motion.p 
+              className="text-md md:text-lg text-muted-foreground mb-12 max-w-2xl mx-auto"
+              variants={fadeInUp}
+            >
               Uma plataforma feita para professores. <br />
               Com IA como aliada, e você como protagonista da educação.
-            </p>
+            </motion.p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-              <Button
-                size="lg"
-                className="gradient-purple-blue hover-glow text-lg px-12 py-6 cursor-pointer"
-                onClick={() => window.open('https://tally.so/embed/3XA9RP', '_blank')}
-              >
-                Receber acesso antecipado
-                <Rocket className="ml-2 w-5 h-5" />
-              </Button>
-            </div>
+            <motion.div 
+              className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16"
+              variants={fadeInUp}
+            >
+              <Tooltip.Root>
+                <Tooltip.Trigger asChild>
+                  <Button
+                    size="lg"
+                    className="gradient-purple-blue hover-glow text-lg px-12 py-6 cursor-pointer pulsing-border"
+                    onClick={() => window.open('https://tally.so/embed/3XA9RP', '_blank')}
+                  >
+                    Receber acesso antecipado
+                    <Rocket className="ml-2 w-5 h-5" />
+                  </Button>
+                </Tooltip.Trigger>
+                <Tooltip.Portal>
+                  <Tooltip.Content className="bg-card border border-border px-3 py-2 rounded-lg text-sm shadow-lg max-w-xs z-[9999999]" sideOffset={5}>
+                    <p>Seja um dos primeiros a experimentar nossa plataforma.</p>
+                    <Tooltip.Arrow className="fill-card" />
+                  </Tooltip.Content>
+                </Tooltip.Portal>
+              </Tooltip.Root>
+            </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
-              <div className="text-center">
-                <div className="text-3xl font-bold gradient-text">IA</div>
-                <div className="text-muted-foreground">Educação humana com suporte da IA</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold gradient-text">Curadoria</div>
-                <div className="text-muted-foreground">Qualidade Assegurada</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold gradient-text">Inovação</div>
-                <div className="text-muted-foreground">Novos Horizontes</div>
-              </div>
-            </div>
-          </div>
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-3xl mx-auto"
+              variants={staggerContainer}
+            >
+              <Tooltip.Root>
+                <Tooltip.Trigger asChild>
+                  <motion.div className="text-center cursor-help" variants={scaleIn}>
+                    <div className="text-3xl font-bold gradient-text mb-2">IA</div>
+                    <div className="text-muted-foreground">Educação humana com suporte da IA</div>
+                  </motion.div>
+                </Tooltip.Trigger>
+                <Tooltip.Portal>
+                  <Tooltip.Content className="bg-card border border-border px-3 py-2 rounded-lg text-sm shadow-lg max-w-xs z-[9999999]" sideOffset={5}>
+                    <p>IA que otimiza conteúdo e personaliza aprendizado.</p>
+                    <Tooltip.Arrow className="fill-card" />
+                  </Tooltip.Content>
+                </Tooltip.Portal>
+              </Tooltip.Root>
+              
+              <Tooltip.Root>
+                <Tooltip.Trigger asChild>
+                  <motion.div className="text-center cursor-help" variants={scaleIn}>
+                    <div className="text-3xl font-bold gradient-text mb-2">Curadoria</div>
+                    <div className="text-muted-foreground">Qualidade Assegurada</div>
+                  </motion.div>
+                </Tooltip.Trigger>
+                <Tooltip.Portal>
+                  <Tooltip.Content className="bg-card border border-border px-3 py-2 rounded-lg text-sm shadow-lg max-w-xs z-[9999999]" sideOffset={5}>
+                    <p>Seleção rigorosa de conteúdo de qualidade.</p>
+                    <Tooltip.Arrow className="fill-card" />
+                  </Tooltip.Content>
+                </Tooltip.Portal>
+              </Tooltip.Root>
+              
+              <Tooltip.Root>
+                <Tooltip.Trigger asChild>
+                  <motion.div className="text-center cursor-help" variants={scaleIn}>
+                    <div className="text-3xl font-bold gradient-text mb-2">Inovação</div>
+                    <div className="text-muted-foreground">Novos Horizontes</div>
+                  </motion.div>
+                </Tooltip.Trigger>
+                <Tooltip.Portal>
+                  <Tooltip.Content className="bg-card border border-border px-3 py-2 rounded-lg text-sm shadow-lg max-w-xs z-[9999999]" sideOffset={5}>
+                    <p>Novas tecnologias para revolucionar o ensino.</p>
+                    <Tooltip.Arrow className="fill-card" />
+                  </Tooltip.Content>
+                </Tooltip.Portal>
+              </Tooltip.Root>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
@@ -211,34 +359,58 @@ function App() {
           style={{ backgroundImage: `url(${gradientBg1})` }}
         />
         
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-16">
-            <Badge className="mb-4 bg-destructive/20 text-destructive border-destructive/30">
-              ⚠️ Desafios Atuais
-            </Badge>
-            <h2 className="text-3xl md:text-5xl font-bold mb-6">
+        <div className="container mx-auto px-6 relative z-10">
+          <motion.div 
+            className="text-center mb-20"
+            variants={fadeInUp}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true, margin: "-100px" }}
+          >
+            <Tooltip.Root>
+              <Tooltip.Trigger asChild>
+                <Badge className="mb-6 bg-destructive/20 text-destructive border-destructive/30 cursor-help">
+                  ⚠️ Desafios Atuais
+                </Badge>
+              </Tooltip.Trigger>
+                              <Tooltip.Portal>
+                  <Tooltip.Content className="bg-card border border-border px-3 py-2 rounded-lg text-sm shadow-lg max-w-xs z-[9999999]" sideOffset={5}>
+                    <p>Problemas da educação online que estamos resolvendo.</p>
+                    <Tooltip.Arrow className="fill-card" />
+                  </Tooltip.Content>
+                </Tooltip.Portal>
+            </Tooltip.Root>
+            <h2 className="text-3xl md:text-5xl font-bold mb-8">
               O que estamos <span className="gradient-text">transformando</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Estamos construindo soluções para os problemas que professores e alunos enfrentam hoje
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-3 gap-10"
+            variants={staggerContainer}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true, margin: "-100px" }}
+          >
             {problems.map((problem, index) => (
-              <Card key={index} className="bg-card/50 backdrop-blur-sm neon-border hover-glow">
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-lg bg-destructive/20 flex items-center justify-center mb-4">
-                    {problem.icon}
-                  </div>
-                  <CardTitle className="text-xl">{problem.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-base">{problem.description}</CardDescription>
-                </CardContent>
-              </Card>
+              <motion.div key={index} variants={fadeInUp}>
+                <Card className="bg-card/50 backdrop-blur-sm neon-border hover-glow">
+                  <CardHeader className="pb-6">
+                    <div className="w-14 h-14 rounded-lg bg-destructive/20 flex items-center justify-center mb-6">
+                      {problem.icon}
+                    </div>
+                    <CardTitle className="text-xl">{problem.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <CardDescription className="text-base leading-relaxed">{problem.description}</CardDescription>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -250,34 +422,58 @@ function App() {
         />
         <div className="absolute inset-0 bg-dots-pattern opacity-20" />
         
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-16">
-            <Badge className="mb-4 bg-primary/20 text-primary border-primary/30">
-              ✨ Nossa Essência
-            </Badge>
-            <h2 className="text-3xl md:text-5xl font-bold mb-6">
+        <div className="container mx-auto px-6 relative z-10">
+          <motion.div 
+            className="text-center mb-20"
+            variants={fadeInUp}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true, margin: "-100px" }}
+          >
+            <Tooltip.Root>
+              <Tooltip.Trigger asChild>
+                <Badge className="mb-6 bg-primary/20 text-primary border-primary/30 cursor-help">
+                  ✨ Nossa Essência
+                </Badge>
+              </Tooltip.Trigger>
+                              <Tooltip.Portal>
+                  <Tooltip.Content className="bg-card border border-border px-3 py-2 rounded-lg text-sm shadow-lg max-w-xs z-[9999999]" sideOffset={5}>
+                    <p>Pilares fundamentais da nossa abordagem.</p>
+                    <Tooltip.Arrow className="fill-card" />
+                  </Tooltip.Content>
+                </Tooltip.Portal>
+            </Tooltip.Root>
+            <h2 className="text-3xl md:text-5xl font-bold mb-8">
               Recursos em <span className="gradient-text">desenvolvimento</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Tecnologia de ponta para um futuro educacional mais acessível e eficiente
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
+            variants={staggerContainer}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true, margin: "-100px" }}
+          >
             {features.map((feature, index) => (
-              <Card key={index} className="bg-card/50 backdrop-blur-sm neon-border hover-glow"> {/* Animação removida */}
-                <CardHeader>
-                  <div className="w-16 h-16 rounded-xl gradient-purple-blue flex items-center justify-center mb-4 glow-effect">
-                    {feature.icon}
-                  </div>
-                  <CardTitle className="text-xl">{feature.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-base">{feature.description}</CardDescription>
-                </CardContent>
-              </Card>
+              <motion.div key={index} variants={fadeInUp}>
+                <Card className="bg-card/50 backdrop-blur-sm neon-border hover-glow">
+                  <CardHeader className="pb-6">
+                    <div className="w-16 h-16 rounded-xl gradient-purple-blue flex items-center justify-center mb-6 glow-effect">
+                      {feature.icon}
+                    </div>
+                    <CardTitle className="text-xl">{feature.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <CardDescription className="text-base leading-relaxed">{feature.description}</CardDescription>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -288,34 +484,58 @@ function App() {
           style={{ backgroundImage: `url(${gradientBg2})` }}
         />
         
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-16">
-            <Badge className="mb-4 bg-accent/20 text-accent border-accent/30">
-              💰 Modelo de Valor Futuro
-            </Badge>
-            <h2 className="text-3xl md:text-5xl font-bold mb-6">
+        <div className="container mx-auto px-6 relative z-10">
+          <motion.div 
+            className="text-center mb-20"
+            variants={fadeInUp}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true, margin: "-100px" }}
+          >
+            <Tooltip.Root>
+              <Tooltip.Trigger asChild>
+                <Badge className="mb-6 bg-accent/20 text-accent border-accent/30 cursor-help">
+                  💰 Modelo de Valor Futuro
+                </Badge>
+              </Tooltip.Trigger>
+                              <Tooltip.Portal>
+                  <Tooltip.Content className="bg-card border border-border px-3 py-2 rounded-lg text-sm shadow-lg max-w-xs z-[9999999]" sideOffset={5}>
+                    <p>Modelo transparente e justo para todos.</p>
+                    <Tooltip.Arrow className="fill-card" />
+                  </Tooltip.Content>
+                </Tooltip.Portal>
+            </Tooltip.Root>
+            <h2 className="text-3xl md:text-5xl font-bold mb-8">
               Acesso <span className="gradient-text">Justo</span> ao Conhecimento
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Um modelo transparente que beneficiará professores e alunos
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-5xl mx-auto"
+            variants={staggerContainer}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true, margin: "-100px" }}
+          >
             {benefits.map((benefit, index) => (
-              <Card key={index} className="bg-card/50 backdrop-blur-sm neon-border hover-scale text-center">
-                <CardHeader>
-                  <div className="w-16 h-16 rounded-xl gradient-purple-pink flex items-center justify-center mb-4 mx-auto glow-effect">
-                    {benefit.icon}
-                  </div>
-                  <CardTitle className="text-xl">{benefit.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-base">{benefit.description}</CardDescription>
-                </CardContent>
-              </Card>
+              <motion.div key={index} variants={fadeInUp} className="h-full">
+                <Card className="bg-card/50 backdrop-blur-sm neon-border hover-scale text-center h-full flex flex-col">
+                  <CardHeader className="pb-6 flex-shrink-0">
+                    <div className="w-16 h-16 rounded-xl gradient-purple-pink flex items-center justify-center mb-6 mx-auto glow-effect">
+                      {benefit.icon}
+                    </div>
+                    <CardTitle className="text-xl">{benefit.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0 flex-grow flex items-center">
+                    <CardDescription className="text-base leading-relaxed">{benefit.description}</CardDescription>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -324,60 +544,127 @@ function App() {
         <div className="absolute inset-0 gradient-purple-blue opacity-20" />
         <div className="absolute inset-0 bg-grid-pattern opacity-30" />
         
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-5xl font-bold mb-6">
+        <div className="container mx-auto px-6 text-center relative z-10">
+          <motion.div 
+            className="max-w-4xl mx-auto"
+            variants={staggerContainer}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true, margin: "-100px" }}
+          >
+            <motion.h2 
+              className="text-3xl md:text-5xl font-bold mb-8"
+              variants={fadeInUp}
+            >
               Para quem <span className="gradient-text">ensina</span> e para quem <span className="gradient-text">aprende</span>: uma nova forma de viver a educação.
-            </h2>
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+            </motion.h2>
+            <motion.p 
+              className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto"
+              variants={fadeInUp}
+            >
               Estamos criando uma nova plataforma de ensino: conteúdo direto, atualizado com IA e professores valorizados.  
               Junte-se aos primeiros a testar e ajudar a moldar essa experiência.
-            </p>
+            </motion.p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-              <Button
-                size="lg"
-                className="gradient-purple-blue hover-glow text-lg px-12 py-6 cursor-pointer"
-                onClick={() => window.open('https://tally.so/embed/3XA9RP', '_blank')}
-              >
-                Receber acesso antecipado
-                <Rocket className="ml-2 w-5 h-5" />
-              </Button>
-            </div>
+            <motion.div 
+              className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16"
+              variants={fadeInUp}
+            >
+              <Tooltip.Root>
+                <Tooltip.Trigger asChild>
+                  <Button
+                    size="lg"
+                    className="gradient-purple-blue hover-glow text-lg px-12 py-6 cursor-pointer pulsing-border"
+                    onClick={() => window.open('https://tally.so/embed/3XA9RP', '_blank')}
+                  >
+                    Receber acesso antecipado
+                    <Rocket className="ml-2 w-5 h-5" />
+                  </Button>
+                </Tooltip.Trigger>
+                <Tooltip.Portal>
+                  <Tooltip.Content className="bg-card border border-border px-3 py-2 rounded-lg text-sm shadow-lg max-w-xs z-[9999999]" sideOffset={5}>
+                    <p>Seja um dos primeiros a experimentar nossa plataforma.</p>
+                    <Tooltip.Arrow className="fill-card" />
+                  </Tooltip.Content>
+                </Tooltip.Portal>
+              </Tooltip.Root>
+            </motion.div>
 
-            <div className="flex flex-wrap justify-center items-center gap-8 text-muted-foreground">
-              <div className="flex items-center space-x-2">
-                <Star className="w-5 h-5 text-yellow-500" />
-                <span>Acesso Antecipado</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Shield className="w-5 h-5 text-green-500" />
-                <span>Qualidade Garantida</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Zap className="w-5 h-5 text-blue-500" />
-                <span>Inovação com IA</span>
-              </div>
-            </div>
-          </div>
+            <motion.div 
+              className="flex flex-wrap justify-center items-center gap-10 text-muted-foreground"
+              variants={staggerContainer}
+            >
+              <Tooltip.Root>
+                <Tooltip.Trigger asChild>
+                  <motion.div className="flex items-center space-x-3 cursor-help" variants={scaleIn}>
+                    <Star className="w-5 h-5 text-yellow-500" />
+                    <span>Acesso Antecipado</span>
+                  </motion.div>
+                </Tooltip.Trigger>
+                <Tooltip.Portal>
+                  <Tooltip.Content className="bg-card border border-border px-3 py-2 rounded-lg text-sm shadow-lg max-w-xs z-[9999999]" sideOffset={5}>
+                    <p>Seja um dos primeiros a testar nossa plataforma.</p>
+                    <Tooltip.Arrow className="fill-card" />
+                  </Tooltip.Content>
+                </Tooltip.Portal>
+              </Tooltip.Root>
+              
+              <Tooltip.Root>
+                <Tooltip.Trigger asChild>
+                  <motion.div className="flex items-center space-x-3 cursor-help" variants={scaleIn}>
+                    <Shield className="w-5 h-5 text-green-500" />
+                    <span>Qualidade Garantida</span>
+                  </motion.div>
+                </Tooltip.Trigger>
+                <Tooltip.Portal>
+                  <Tooltip.Content className="bg-card border border-border px-3 py-2 rounded-lg text-sm shadow-lg max-w-xs z-[9999999]" sideOffset={5}>
+                    <p>Conteúdo com curadoria rigorosa.</p>
+                    <Tooltip.Arrow className="fill-card" />
+                  </Tooltip.Content>
+                </Tooltip.Portal>
+              </Tooltip.Root>
+              
+              <Tooltip.Root>
+                <Tooltip.Trigger asChild>
+                  <motion.div className="flex items-center space-x-3 cursor-help" variants={scaleIn}>
+                    <Zap className="w-5 h-5 text-blue-500" />
+                    <span>Inovação com IA</span>
+                  </motion.div>
+                </Tooltip.Trigger>
+                <Tooltip.Portal>
+                  <Tooltip.Content className="bg-card border border-border px-3 py-2 rounded-lg text-sm shadow-lg max-w-xs z-[9999999]" sideOffset={5}>
+                    <p>Tecnologia de ponta para revolucionar o ensino.</p>
+                    <Tooltip.Arrow className="fill-card" />
+                  </Tooltip.Content>
+                </Tooltip.Portal>
+              </Tooltip.Root>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-12 border-t border-border bg-card/50">
-        <div className="container mx-auto px-4">
+      <motion.footer 
+        className="py-16 border-t border-border bg-card/50"
+        variants={fadeInUp}
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true, margin: "-100px" }}
+      >
+        <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row items-center justify-center">
-            <div className="flex items-center space-x-2 mb-4 md:mb-0">
+            <div className="flex items-center space-x-2 mb-6 md:mb-0">
               <span className="text-xl font-bold gradient-text">startup.dev.br</span>
             </div>
           </div>
           
-          <div className="mt-8 pt-8 border-t border-border text-center text-muted-foreground">
+          <div className="mt-10 pt-10 border-t border-border text-center text-muted-foreground">
             <p>&copy; 2025 startup.dev.br. Todos os direitos reservados. Construindo o futuro da educação com IA.</p>
           </div>
         </div>
-      </footer>
-    </div>
+      </motion.footer>
+      </div>
+    </Tooltip.Provider>
   )
 }
 
