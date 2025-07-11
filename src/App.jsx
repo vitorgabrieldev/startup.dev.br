@@ -28,10 +28,10 @@ import {
 import './App.css'
 
 // Importando as imagens
-import heroBackground from './assets/TG9PKr95AzMP.jpg'
-import gradientBg1 from './assets/gvxttIlWlQos.jpg'
-import gradientBg2 from './assets/09mwMSYz8qBv.jpg'
-import techBg from './assets/ZekcKZbLVRK8.jpg'
+import heroBackground from './assets/TG9PKr95AzMP.webp'
+import gradientBg1 from './assets/gvxttIlWlQos.webp'
+import gradientBg2 from './assets/09mwMSYz8qBv.webp'
+import techBg from './assets/ZekcKZbLVRK8.webp'
 
 // Variantes de animação
 const fadeInUp = {
