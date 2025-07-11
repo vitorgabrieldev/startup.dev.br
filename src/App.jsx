@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Button } from '@/components/ui/button.jsx'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx'
@@ -27,11 +27,20 @@ import {
 } from 'lucide-react'
 import './App.css'
 
-// Importando as imagens
+// Importando apenas as imagens críticas
 import heroBackground from './assets/TG9PKr95AzMP.webp'
 import gradientBg1 from './assets/gvxttIlWlQos.webp'
 import gradientBg2 from './assets/09mwMSYz8qBv.webp'
 import techBg from './assets/ZekcKZbLVRK8.webp'
+
+// Lazy load para imagens não críticas
+const lazyLoadImage = (src) => {
+  return new Promise((resolve) => {
+    const img = new Image()
+    img.onload = () => resolve(src)
+    img.src = src
+  })
+}
 
 // Variantes de animação
 const fadeInUp = {

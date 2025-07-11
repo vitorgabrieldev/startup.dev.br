@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -202,5 +201,6 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #a855f7;
 }
+
 
 
