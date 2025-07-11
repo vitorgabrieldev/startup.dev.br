@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Button } from '@/components/ui/button.jsx'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx'
@@ -27,7 +27,7 @@ import {
 } from 'lucide-react'
 import './App.css'
 
-// Importando apenas as imagens críticas
+// Importando as imagens
 import heroBackground from './assets/TG9PKr95AzMP.webp'
 import gradientBg1 from './assets/gvxttIlWlQos.webp'
 import gradientBg2 from './assets/09mwMSYz8qBv.webp'
@@ -84,16 +84,140 @@ const slideInFromTop = {
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const [scrollY, setScrollY] = useState(0)
+  const inactivityTimerRef = useRef(null)
+  const lastScrollPositionRef = useRef(0)
+  const lastActivityTimeRef = useRef(Date.now())
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY
       setIsScrolled(scrollTop > 100)
+      setScrollY(scrollTop)
+      
+      // Reset inactivity timer on scroll
+      lastActivityTimeRef.current = Date.now()
+      lastScrollPositionRef.current = scrollTop
+      
+      // Clear existing timer
+      if (inactivityTimerRef.current) {
+        clearTimeout(inactivityTimerRef.current)
+      }
+      
+      // Set new timer for inactivity
+      inactivityTimerRef.current = setTimeout(() => {
+        const timeSinceLastActivity = Date.now() - lastActivityTimeRef.current
+        const currentScrollPosition = window.scrollY
+        
+        // Only trigger if user has been inactive for 8 seconds and hasn't scrolled
+        if (timeSinceLastActivity >= 8000 && Math.abs(currentScrollPosition - lastScrollPositionRef.current) < 10) {
+          // Get current viewport height
+          const viewportHeight = window.innerHeight
+          const currentPosition = window.scrollY
+          
+          // Smooth scroll down by 50px and back
+          const targetPosition = Math.min(currentPosition + 50, document.body.scrollHeight - viewportHeight)
+          
+          // Animação contínua: vai para baixo e volta
+          continuousScrollAnimation(currentPosition, 50, 4000)
+        }
+      }, 8000) // 8 seconds of inactivity
+    }
+
+    const handleMouseMove = () => {
+      lastActivityTimeRef.current = Date.now()
+      
+      // Clear existing timer
+      if (inactivityTimerRef.current) {
+        clearTimeout(inactivityTimerRef.current)
+      }
+      
+      // Reset timer on mouse movement
+      inactivityTimerRef.current = setTimeout(() => {
+        const timeSinceLastActivity = Date.now() - lastActivityTimeRef.current
+        const currentScrollPosition = window.scrollY
+        
+        if (timeSinceLastActivity >= 8000 && Math.abs(currentScrollPosition - lastScrollPositionRef.current) < 10) {
+          const viewportHeight = window.innerHeight
+          const currentPosition = window.scrollY
+          const targetPosition = Math.min(currentPosition + 50, document.body.scrollHeight - viewportHeight)
+          
+          // Animação contínua: vai para baixo e volta
+          continuousScrollAnimation(currentPosition, 50, 4000)
+        }
+      }, 8000)
+    }
+
+    const handleKeyPress = () => {
+      lastActivityTimeRef.current = Date.now()
+      
+      if (inactivityTimerRef.current) {
+        clearTimeout(inactivityTimerRef.current)
+      }
+      
+      inactivityTimerRef.current = setTimeout(() => {
+        const timeSinceLastActivity = Date.now() - lastActivityTimeRef.current
+        const currentScrollPosition = window.scrollY
+        
+        if (timeSinceLastActivity >= 8000 && Math.abs(currentScrollPosition - lastScrollPositionRef.current) < 10) {
+          const viewportHeight = window.innerHeight
+          const currentPosition = window.scrollY
+          const targetPosition = Math.min(currentPosition + 50, document.body.scrollHeight - viewportHeight)
+          
+          // Animação contínua: vai para baixo e volta
+          continuousScrollAnimation(currentPosition, 50, 4000)
+        }
+      }, 8000)
     }
 
     window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
+    window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('keydown', handleKeyPress)
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('keydown', handleKeyPress)
+      if (inactivityTimerRef.current) {
+        clearTimeout(inactivityTimerRef.current)
+      }
+    }
   }, [])
+
+  // Função para animação de scroll contínua (0% → 50% → 100%)
+  const continuousScrollAnimation = (currentPosition, scrollDistance = 50, totalDuration = 4000) => {
+    const startPosition = currentPosition
+    const startTime = performance.now()
+    
+    const easeInOutCubic = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+    
+    const animateScroll = (currentTime) => {
+      const elapsed = currentTime - startTime
+      const progress = Math.min(elapsed / totalDuration, 1)
+      
+      // 0% = posição original, 50% = posição + scrollDistance, 100% = posição original
+      let easedProgress
+      if (progress <= 0.5) {
+        // Primeira metade: vai para baixo (0% → 50%)
+        const firstHalfProgress = progress * 2 // 0 → 1
+        easedProgress = easeInOutCubic(firstHalfProgress)
+        const currentScrollPosition = startPosition + (scrollDistance * easedProgress)
+        window.scrollTo(0, currentScrollPosition)
+      } else {
+        // Segunda metade: volta para cima (50% → 100%)
+        const secondHalfProgress = (progress - 0.5) * 2 // 0 → 1
+        easedProgress = easeInOutCubic(secondHalfProgress)
+        const currentScrollPosition = startPosition + scrollDistance - (scrollDistance * easedProgress)
+        window.scrollTo(0, currentScrollPosition)
+      }
+      
+      if (progress < 1) {
+        requestAnimationFrame(animateScroll)
+      }
+    }
+    
+    requestAnimationFrame(animateScroll)
+  }
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId)
@@ -231,9 +355,10 @@ function App() {
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20 bg-float-slow"
           style={{ 
             backgroundImage: `url(${heroBackground})`,
+            transform: `translateY(${scrollY * 0.3}px) scale(1.1)`,
           }}
         />
         <div className="absolute inset-0 bg-grid-pattern opacity-30" />
@@ -364,8 +489,11 @@ function App() {
       {/* Problems Section */}
       <section id="problems" className="py-20 relative">
         <div 
-          className="absolute inset-0 bg-cover bg-center opacity-10"
-          style={{ backgroundImage: `url(${gradientBg1})` }}
+          className="absolute inset-0 bg-cover bg-center opacity-10 bg-drift-left"
+          style={{ 
+            backgroundImage: `url(${gradientBg1})`,
+            transform: `translateY(${scrollY * 0.2}px) translateX(${scrollY * 0.1}px)`,
+          }}
         />
         
         <div className="container mx-auto px-6 relative z-10">
@@ -426,8 +554,11 @@ function App() {
       {/* Features Section */}
       <section id="features" className="py-20 relative">
         <div 
-          className="absolute inset-0 bg-cover bg-center opacity-10"
-          style={{ backgroundImage: `url(${techBg})` }}
+          className="absolute inset-0 bg-cover bg-center opacity-10 bg-gentle-rotate"
+          style={{ 
+            backgroundImage: `url(${techBg})`,
+            transform: `translateY(${scrollY * 0.15}px) rotate(${scrollY * 0.01}deg)`,
+          }}
         />
         <div className="absolute inset-0 bg-dots-pattern opacity-20" />
         
@@ -489,8 +620,11 @@ function App() {
       {/* Pricing Section */}
       <section id="pricing" className="py-20 relative">
         <div 
-          className="absolute inset-0 bg-cover bg-center opacity-10"
-          style={{ backgroundImage: `url(${gradientBg2})` }}
+          className="absolute inset-0 bg-cover bg-center opacity-10 bg-drift-right"
+          style={{ 
+            backgroundImage: `url(${gradientBg2})`,
+            transform: `translateY(${scrollY * 0.25}px) translateX(${scrollY * -0.05}px)`,
+          }}
         />
         
         <div className="container mx-auto px-6 relative z-10">

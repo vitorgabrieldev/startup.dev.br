@@ -49,7 +49,6 @@
   --popover: #1a1a3e;
   --popover-foreground: #ffffff;
   --primary: #8b5cf6;
-  --primary-foreground: #ffffff;
   --secondary: #6366f1;
   --secondary-foreground: #ffffff;
   --muted: #1e1e3f;
@@ -113,6 +112,74 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+
+
+/* Animações de movimento para imagens de fundo */
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-10px) scale(1.02);
+  }
+}
+
+@keyframes drift-left {
+  0%, 100% {
+    transform: translateX(0px) translateY(0px);
+  }
+  25% {
+    transform: translateX(-5px) translateY(-3px);
+  }
+  50% {
+    transform: translateX(-8px) translateY(0px);
+  }
+  75% {
+    transform: translateX(-3px) translateY(3px);
+  }
+}
+
+@keyframes drift-right {
+  0%, 100% {
+    transform: translateX(0px) translateY(0px);
+  }
+  25% {
+    transform: translateX(5px) translateY(-3px);
+  }
+  50% {
+    transform: translateX(8px) translateY(0px);
+  }
+  75% {
+    transform: translateX(3px) translateY(3px);
+  }
+}
+
+@keyframes gentle-rotate {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(1deg) scale(1.01);
+  }
+}
+
+/* Classes para aplicar as animações */
+.bg-float-slow {
+  animation: float-slow 8s ease-in-out infinite;
+}
+
+.bg-drift-left {
+  animation: drift-left 12s ease-in-out infinite;
+}
+
+.bg-drift-right {
+  animation: drift-right 15s ease-in-out infinite;
+}
+
+.bg-gentle-rotate {
+  animation: gentle-rotate 20s ease-in-out infinite;
 }
 
 /* Animações customizadas (removidas ou simplificadas) */
